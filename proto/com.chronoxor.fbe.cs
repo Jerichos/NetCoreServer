@@ -5350,9 +5350,9 @@ namespace com.chronoxor.FBE {
     public interface ISenderListener
     {
         // Send message handler
-        long OnSend(byte[] buffer, long offset, long size) { return size; }
+        long OnSend(byte[] buffer, long offset, long size);
         // Send log message handler
-        void OnSendLog(string message) {}
+        void OnSendLog(string message);
     }
 
     // Fast Binary Encoding base sender
@@ -5388,13 +5388,22 @@ namespace com.chronoxor.FBE {
             Buffer.Remove(0, sent);
             return sent;
         }
+
+        public virtual long OnSend(byte[] buffer, long offset, long size)
+        {
+            return size;
+        }
+
+        public virtual void OnSendLog(string message)
+        {
+        }
     }
 
     // Fast Binary Encoding base receiver listener interface
     public interface IReceiverListener
     {
         // Receive log message handler
-        void OnReceiveLog(string message) {}
+        void OnReceiveLog(string message);
     }
 
     // Fast Binary Encoding base receiver
@@ -5660,6 +5669,9 @@ namespace com.chronoxor.FBE {
 
         // Receive message handler
         internal abstract bool OnReceive(long type, byte[] buffer, long offset, long size);
+        public virtual void OnReceiveLog(string message)
+        {
+        }
     }
 
     // Fast Binary Encoding base client listener interface
@@ -5982,6 +5994,18 @@ namespace com.chronoxor.FBE {
 
         // Receive message handler
         internal abstract bool OnReceive(long type, byte[] buffer, long offset, long size);
+        public virtual long OnSend(byte[] buffer, long offset, long size)
+        {
+            return size;
+        }
+
+        public virtual void OnSendLog(string message)
+        {
+        }
+
+        public virtual void OnReceiveLog(string message)
+        {
+        }
     }
 
 } // namespace com.chronoxor.FBE

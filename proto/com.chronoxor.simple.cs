@@ -2134,11 +2134,11 @@ namespace com.chronoxor.simple.FBE {
     public interface IReceiverListener : com.chronoxor.FBE.IReceiverListener
     {
         // Receive handlers
-        void OnReceive(global::com.chronoxor.simple.SimpleRequest value) {}
-        void OnReceive(global::com.chronoxor.simple.SimpleResponse value) {}
-        void OnReceive(global::com.chronoxor.simple.SimpleReject value) {}
-        void OnReceive(global::com.chronoxor.simple.SimpleNotify value) {}
-        void OnReceive(global::com.chronoxor.simple.DisconnectRequest value) {}
+        void OnReceive(global::com.chronoxor.simple.SimpleRequest value);
+        void OnReceive(global::com.chronoxor.simple.SimpleResponse value);
+        void OnReceive(global::com.chronoxor.simple.SimpleReject value);
+        void OnReceive(global::com.chronoxor.simple.SimpleNotify value);
+        void OnReceive(global::com.chronoxor.simple.DisconnectRequest value);
     }
 
     // Fast Binary Encoding com.chronoxor.simple receiver
@@ -2290,6 +2290,26 @@ namespace com.chronoxor.simple.FBE {
 
             return false;
         }
+
+        public virtual void OnReceive(SimpleRequest value)
+        {
+        }
+
+        public virtual void OnReceive(SimpleResponse value)
+        {
+        }
+
+        public virtual void OnReceive(SimpleReject value)
+        {
+        }
+
+        public virtual void OnReceive(SimpleNotify value)
+        {
+        }
+
+        public virtual void OnReceive(DisconnectRequest value)
+        {
+        }
     }
 
 } // namespace com.chronoxor.simple.FBE
@@ -2300,11 +2320,11 @@ namespace com.chronoxor.simple.FBE {
     public interface IProxyListener : com.chronoxor.FBE.IReceiverListener
     {
         // Proxy handlers
-        void OnProxy(SimpleRequestModel model, long type, byte[] buffer, long offset, long size) {}
-        void OnProxy(SimpleResponseModel model, long type, byte[] buffer, long offset, long size) {}
-        void OnProxy(SimpleRejectModel model, long type, byte[] buffer, long offset, long size) {}
-        void OnProxy(SimpleNotifyModel model, long type, byte[] buffer, long offset, long size) {}
-        void OnProxy(DisconnectRequestModel model, long type, byte[] buffer, long offset, long size) {}
+        void OnProxy(SimpleRequestModel model, long type, byte[] buffer, long offset, long size);
+        void OnProxy(SimpleResponseModel model, long type, byte[] buffer, long offset, long size);
+        void OnProxy(SimpleRejectModel model, long type, byte[] buffer, long offset, long size);
+        void OnProxy(SimpleNotifyModel model, long type, byte[] buffer, long offset, long size);
+        void OnProxy(DisconnectRequestModel model, long type, byte[] buffer, long offset, long size);
     }
 
     // Fast Binary Encoding com.chronoxor.simple proxy
@@ -2413,6 +2433,26 @@ namespace com.chronoxor.simple.FBE {
             }
 
             return false;
+        }
+
+        public virtual void OnProxy(SimpleRequestModel model, long type, byte[] buffer, long offset, long size)
+        {
+        }
+
+        public virtual void OnProxy(SimpleResponseModel model, long type, byte[] buffer, long offset, long size)
+        {
+        }
+
+        public virtual void OnProxy(SimpleRejectModel model, long type, byte[] buffer, long offset, long size)
+        {
+        }
+
+        public virtual void OnProxy(SimpleNotifyModel model, long type, byte[] buffer, long offset, long size)
+        {
+        }
+
+        public virtual void OnProxy(DisconnectRequestModel model, long type, byte[] buffer, long offset, long size)
+        {
         }
     }
 
@@ -2530,13 +2570,13 @@ namespace com.chronoxor.simple.FBE {
         public Task RequestListener(IClientListener listener, global::com.chronoxor.simple.DisconnectRequest value) { return RequestListener(listener, value, TimeSpan.Zero); }
         public Task RequestListener(IClientListener listener, global::com.chronoxor.simple.DisconnectRequest value, TimeSpan timeout)
         {
-            TaskCompletionSource source = new TaskCompletionSource();
+            TaskCompletionSource<DisconnectRequest> source = new TaskCompletionSource<DisconnectRequest>();
             Task task = source.Task;
 
             // Send the request message
             long serialized = SendListener(listener, value);
             if (serialized > 0)
-                source.SetResult();
+                source.SetResult(value);
             else
                 source.SetException(new Exception("Send request failed!"));
 
